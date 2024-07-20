@@ -14,7 +14,7 @@ jobs:
     container: 
       image: archlinux:latest
     steps:
-      - name: Pacman key init, upgrade, update to latest
+      - name: Pacman key init, update latest, install required dependencies for PKBUILD/ssh-agent
         run: pacman-key --init && pacman -Syu --noconfirm git openssh base-devel pacman-contrib
       - name: Checkout codebase
         uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
           # Use ssh-agent for private key
       - name: After update, restart gpg-server as it may be old
         run : gpgconf --kill all
-      - name: Install dependencies for PKGBUILD in container
+      - name: Install dependencies for the pkg
         run: |
           pacman -S --noconfirm java-runtime
       - uses: webfactory/ssh-agent@v0.9.0
@@ -65,16 +65,17 @@ jobs:
           git status
           git checkout master
           git add -A PKGBUILD .SRCINFO 
-          git diff-index --quiet HEAD || pkgnew=$(sed -Ei "1,\$s|^(pkgver=).*|\1$pkgver_date|" PKGBUILD) git commit -m "Update to $pkgnew" 
+          git diff-index --quiet HEAD || pkgnew=$(sed -Ei "1,\$s|^(pkgver=).*|\1|" PKGBUILD) git commit -m "Update to $pkgnew" 
           git status
           git push -u origin master
           cd ..
           cd ..
+          git config --global --add safe.directory /__w/burpsuite/burpsuite
       - uses: EndBug/add-and-commit@v9
         with:
          # The arguments for the `git add` command (see the paragraph below for more info)
          # Default: '.'
-         add: '-A'
+         add: 'PKGBUILD .SRCINFO'
 
          # The name of the user that will be displayed as the author of the commit.
          # Default: depends on the default_author input

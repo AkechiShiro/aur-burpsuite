@@ -3,8 +3,6 @@ name: Update Burpsuite to the latest early adopter version by scrapping Portswag
 on:
   push:
     branches: ["main"]
-  pull_request: 
-    branches: ["main"]
   schedule:
     - cron: "0 10 * * 1"   # Every Monday at 10:00 UTC run update
 jobs:

@@ -1,4 +1,4 @@
-name: Build Nextcloud from upstream daily and push to AUR latest release
+name: Update Burpsuite to the latest early adopter version by scrapping Portswagger release website
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   schedule:
     - cron: "0 10 * * 1"   # Every Monday at 10:00 UTC run update
 jobs:
-  Update-AppImage:
+  Bump-BurpSuite-LatestVersion:
     runs-on: ubuntu-latest
     environment: CI_PROD
     container: 
@@ -27,7 +27,7 @@ jobs:
         run : gpgconf --kill all
       - name: Install all latest dependencies in container
         run: |
-          pacman -S --noconfirm javaruntime
+          pacman -S --noconfirm java-runtime
       - uses: webfactory/ssh-agent@v0.9.0
         with:
             ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}

@@ -15,7 +15,7 @@ jobs:
       image: archlinux:latest
     steps:
       - name: Pacman key init, upgrade, update to latest
-        run: pacman-key --init && pacman -Syu --noconfirm git openssh
+        run: pacman-key --init && pacman -Syu --noconfirm git openssh base-devel pacman-contrib
       - name: Checkout codebase
         uses: actions/checkout@v4
         with:

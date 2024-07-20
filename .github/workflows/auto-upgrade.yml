@@ -115,7 +115,7 @@ jobs:
 
          # The message for the commit.
          # Default: 'Commit from GitHub Actions (name of the workflow)'
-         message: 'Update to latest AppImage version'
+         #message: ''
 
          # The way the action should handle pathspec errors from the add and remove commands. Three options are available:
          # - ignore -> errors will be logged but the step won't fail

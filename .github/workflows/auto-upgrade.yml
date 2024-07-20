@@ -68,7 +68,7 @@ jobs:
           git push -u origin master
           cd ..
           cd ..
-          git config --global --add safe.directory /__w/burpsuite/burpsuite
+          git config --global --add safe.directory /__w/aur-burpsuite/aur-burpsuite
       - uses: EndBug/add-and-commit@v9
         with:
          # The arguments for the `git add` command (see the paragraph below for more info)

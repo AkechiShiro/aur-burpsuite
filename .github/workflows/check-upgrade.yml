@@ -38,7 +38,7 @@ jobs:
       - name: Build latest update from upstream
         run: |
           pkgver_new=$(curl https://portswigger.net/burp/releases | grep community | sed -nE "s/.*professional-community-(.*)\" class=\".*/\1/p" | head -n  1 | tr -d '\n' | tr '-' '.') echo $pkgver_new > tmp-latest-version
-          diff latest_version tmp-latest-version 2>/dev/null || echo "Not the same"  # if not the same trigger update CI
+          diff aur-burpsuite/latest_version tmp-latest-version 2>/dev/null || echo "Not the same"  # if not the same trigger update CI
           exit 0
       - name: Copy updated scripts to AUR repo and commit
         run: |

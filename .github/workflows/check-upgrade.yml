@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: CI_PROD
     steps:
+      - name: Force install openssh ssh-agent
+        run: | 
+          sudo apt upgrade
+          sudo apt install openssh ssh-agent -y
       - name: Checkout codebase
         uses: actions/checkout@v4
         with:

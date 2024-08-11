@@ -7,7 +7,7 @@ on:
       - completed
 
 jobs:
-  on-failure:
+  on-success:
     runs-on: ubuntu-latest
     environment: CI_PROD
     container: 

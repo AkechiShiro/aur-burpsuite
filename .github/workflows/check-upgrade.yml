@@ -8,6 +8,7 @@ on:
 jobs:
   Check-BurpSuite-NewVersion:
     runs-on: ubuntu-latest
+    environment: CI_PROD
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v4

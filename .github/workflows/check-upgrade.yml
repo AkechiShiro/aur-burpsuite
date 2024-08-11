@@ -13,7 +13,7 @@ jobs:
       - name: Force install openssh ssh-agent
         run: | 
           sudo apt upgrade
-          sudo apt install openssh ssh-agent -y
+          sudo apt install openssh-server -y
       - name: Checkout codebase
         uses: actions/checkout@v4
         with:

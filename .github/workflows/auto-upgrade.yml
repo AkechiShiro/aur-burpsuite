@@ -5,6 +5,9 @@ on:
     workflows: [Check BurpSuite latest version if a new one is out trigger update CI job]
     types:
       - completed
+  push:
+    branches:
+      - 'main'
 
 jobs:
   on-success:

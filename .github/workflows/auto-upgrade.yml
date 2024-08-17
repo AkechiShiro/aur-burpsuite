@@ -69,6 +69,7 @@ jobs:
           git add -A PKGBUILD .SRCINFO 
           git diff-index --quiet HEAD || pkgnew=$(sed -Ei "1,\$s|^(pkgver=).*|\1|" PKGBUILD) git commit -m "Update to $pkgnew" 
           pkgnew=$(sed -Ei "1,\$s|^(pkgver=).*|\1|" PKGBUILD) echo $pkgnew | tee latest_version 
+          cat latest_version
           cp latest_version ../
           cp latest_version ../../
           git status
@@ -77,6 +78,8 @@ jobs:
           cd ..
           cd ..
           git config --global --add safe.directory /__w/aur-burpsuite/aur-burpsuite
+      - name: Show latest_version
+        run: cat latest_version /__w/aur-burpsuite/latest_version /__w/aur-burpsuite/aur-burpsuite/latest_version
       - uses: EndBug/add-and-commit@v9
         with:
          # The arguments for the `git add` command (see the paragraph below for more info)

@@ -36,5 +36,5 @@ jobs:
       - name: Build latest update from upstream
         run: |
           pkgver_new=$(curl https://portswigger.net/burp/releases | grep community | sed -nE "s/.*professional-community-(.*)\" class=\".*/\1/p" | head -n  1 | tr -d '\n' | tr '-' '.') echo $pkgver_new > tmp-latest-version
-          (diff aur-burpsuite/latest_version tmp-latest-version 2>/dev/null || exit 0) && exit 1  
+          (diff aur-burpsuite/latest_version tmp-latest-version 2>/dev/null || exit 0) && exit 1
           # if not the same trigger update CI (on-success) else on-failure do nothing

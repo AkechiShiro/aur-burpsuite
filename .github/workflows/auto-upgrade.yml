@@ -66,6 +66,8 @@ jobs:
           git add -A PKGBUILD .SRCINFO 
           git diff-index --quiet HEAD || pkgnew=$(sed -Ei "1,\$s|^(pkgver=).*|\1|" PKGBUILD) git commit -m "Update to $pkgnew" 
           pkgnew=$(sed -Ei "1,\$s|^(pkgver=).*|\1|" PKGBUILD) echo $pkgnew | tee latest_version 
+          cp latest_version ../
+          cp latest_version ../../
           git status
           git pull # never know if we got something to pull from upstream
           git push -u origin master

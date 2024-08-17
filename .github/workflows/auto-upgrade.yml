@@ -53,6 +53,8 @@ jobs:
         run: |
           chmod +x ./update.sh
           su makepkg-user -c "bash ./update.sh"
+          cat latest_version
+          echo "pkgver_new: $pkgver_new"
           # Move into AUR git repo
           #- name: Git Push
           #  run: | 
@@ -60,15 +62,16 @@ jobs:
           #    git push origin master
       - name: Copy updated scripts to AUR repo and commit
         run: |
+          echo "pkgver_new: $pkgver_new"
           cd burpsuite
           cp ../PKGBUILD ./
           cp ../.SRCINFO ./
+          cp ../latest_version ./
           # Push to AUR the update
           git status
           git checkout master
-          git add -A PKGBUILD .SRCINFO 
-          git diff-index --quiet HEAD || pkgnew=$(sed -Ei "1,\$s|^(pkgver=).*|\1|" PKGBUILD) git commit -m "Update to $pkgnew" 
-          pkgnew=$(sed -Ei "1,\$s|^(pkgver=).*|\1|" PKGBUILD) echo $pkgnew | tee latest_version 
+          git add PKGBUILD .SRCINFO 
+          git diff-index --quiet HEAD || git commit -m "Update to $(sed -Ei '1,\$s|^(pkgver=).*|\1|' PKGBUILD)" 
           cat latest_version
           cp latest_version ../
           cp latest_version ../../

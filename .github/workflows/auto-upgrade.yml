@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies for the pkg
         run: |
           pacman -S --noconfirm java-runtime
-      - uses: webfactory/ssh-agent@v0.9.0
+      - uses: webfactory/ssh-agent@v0.9.1
         with:
             ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Create a user for makepkg usage

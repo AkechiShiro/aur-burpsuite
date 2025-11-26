@@ -16,7 +16,7 @@ jobs:
       - name: Pacman key init, update latest, install required dependencies for PKBUILD/ssh-agent
         run: pacman-key --init && pacman -Syu --noconfirm git openssh base-devel pacman-contrib
       - name: Checkout codebase
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}

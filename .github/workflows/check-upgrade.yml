@@ -2,14 +2,14 @@ name: Check BurpSuite latest version if a new one is out trigger update CI job
 
 on:
   schedule:
-    - cron: "0 23 * * *"   # Every day at 23h00 UTC run check
+    - cron: "0 23 * * *" # Every day at 23h00 UTC run check
 jobs:
   Check-BurpSuite-NewVersion:
     runs-on: ubuntu-latest
     environment: CI_PROD
     steps:
       - name: Force install openssh ssh-agent
-        run: | 
+        run: |
           sudo apt upgrade
           sudo apt install openssh-server -y
       - name: Checkout codebase
@@ -21,7 +21,7 @@ jobs:
           # Use ssh-agent for private key
       - uses: webfactory/ssh-agent@v0.9.1
         with:
-            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Git configuration
         run: |
           git config --global init.defaultBranch master
@@ -33,8 +33,17 @@ jobs:
       # TODO: Find if that's a good solution ^ or to avoid in terms of security
       # Read a lot of documentation and blogs...
       # TODO: Forced to use chroot because we are the root user in the container
-      - name: Build latest update from upstream
+      - name: Check if new version is available
         run: |
-          pkgver_new=$(curl https://portswigger.net/burp/releases | grep community | sed -nE "s/.*professional-community-(.*)\" class=\".*/\1/p" | head -n  1 | tr -d '\n' | tr '-' '.') echo $pkgver_new > tmp-latest-version
-          (diff aur-burpsuite/latest_version tmp-latest-version 2>/dev/null || exit 0) && exit 1
-          # if not the same trigger update CI (on-success) else on-failure do nothing
+          # Get latest version from RSS feed
+          pkgver_new=$(
+            curl -sf "https://portswigger.net/burp/releases/rss" |
+            grep -o 'https://portswigger.net/burp/releases/professional-community-[0-9-]\+' |
+            sed 's#.*/professional-community-##' |
+            sort -V |
+            tail -n 1 |
+            sed 's/-/./g'
+          )
+
+          # If versions differ, exit with success to trigger update job
+          ! diff -q aur-burpsuite/latest_version $pkgver_new >/dev/null 2>&1 && exit 0 || exit 1

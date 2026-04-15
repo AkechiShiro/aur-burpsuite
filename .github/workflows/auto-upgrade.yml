@@ -80,7 +80,7 @@ jobs:
           git config --global --add safe.directory /__w/aur-burpsuite/aur-burpsuite
           #- name: Show latest_version
           #  run: cat latest_version /__w/aur-burpsuite/latest_version /__w/aur-burpsuite/aur-burpsuite/latest_version
-      - uses: EndBug/add-and-commit@v9
+      - uses: EndBug/add-and-commit@v10
         with:
          add: 'PKGBUILD .SRCINFO latest_version'
          author_name: "GITHUB CI"

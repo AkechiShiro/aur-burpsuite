@@ -15,15 +15,15 @@ depends=('java-runtime>=21')
 arch=('any')
 license=('custom')
 noextract=("${pkgname}-${pkgver}.jar")
-# Alternative faster source from CDN, 
+# Alternative faster source from CDN,
 # From line 422 (might change), view-source:https://portswigger.net/burp/releases <input id="CdnBaseUrl" name="CdnBaseUrl" type="hidden" value="https://portswigger-cdn.net">
 # Fixes #1 on aur-burpsuite
-source=("${pkgname}-${pkgver}.jar::https://portswigger-cdn.net/burp/releases/download?product=community&version=${pkgver}&type=Jar"
-        LICENSE
-        burpsuite.desktop
-        icon64.png)
+source=("${pkgname}-${pkgver}.jar::https://portswigger.net/burp/releases/startdownload?product=desktop&version=${pkgver}&type=jar"
+  LICENSE
+  burpsuite.desktop
+  icon64.png)
 install=burpsuite.install
-sha256sums=('34491c6e4b95e2e16327e94b4c40fb05916c460db5983098f2609d680b85ce3a'
+sha256sums=('807e0beb0c1d4a7f3bcf1f5b9a323493c685a913e7a772f016e05227aa69a8d1'
             'a1146672de7084a1cddc5b7dab4d18b3530c194bd6e45a2b0ac04b579751ca30'
             '950c61d7ce1257c21a4152abebb8da320d0206ceb59247d6c912903d1ed39fc8'
             'd31232a7dbdab9d5723f12aa25c52d13fd46ef2e8837a85fb9a08c3a7f151541')
@@ -39,8 +39,8 @@ package() {
   install -m644 icon64.png ${pkgdir}/usr/share/pixmaps/burpsuite.png
 
   # Create startup file for burpsuite.
-  echo "#!/bin/sh" > ${pkgdir}/usr/bin/${pkgname}
-  echo "exec \$JAVA_HOME/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.desktop/javax.swing=ALL-UNNAMED -jar /usr/share/burpsuite/burpsuite.jar \$@" >> ${pkgdir}/usr/bin/${pkgname}
+  echo "#!/bin/sh" >${pkgdir}/usr/bin/${pkgname}
+  echo "exec \$JAVA_HOME/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.desktop/javax.swing=ALL-UNNAMED -jar /usr/share/burpsuite/burpsuite.jar \$@" >>${pkgdir}/usr/bin/${pkgname}
   chmod 755 ${pkgdir}/usr/bin/${pkgname}
 }
 

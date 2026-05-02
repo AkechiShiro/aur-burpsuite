@@ -1,8 +1,13 @@
-name: Update Burpsuite to the latest early adopter version by scrapping Portswagger release website
+name: Update Burpsuite to the latest early adopter version by scrapping
+  Portswagger release website
 
-on: 
+on:
   workflow_run:
-    workflows: [Check BurpSuite latest version if a new one is out trigger update CI job]
+    workflows:
+      [
+        Check BurpSuite latest version if a new one is out trigger update CI
+          job,
+      ]
     types:
       - completed
 
@@ -10,11 +15,13 @@ jobs:
   on-success:
     runs-on: ubuntu-latest
     environment: CI_PROD
-    container: 
+    container:
       image: archlinux:latest
     steps:
-      - name: Pacman key init, update latest, install required dependencies for PKBUILD/ssh-agent
-        run: pacman-key --init && pacman -Syu --noconfirm git openssh base-devel pacman-contrib
+      - name: Pacman key init, update latest, install required dependencies for
+          PKBUILD/ssh-agent
+        run: pacman-key --init && pacman -Syu --noconfirm git openssh base-devel
+          pacman-contrib
       - name: Checkout codebase
         uses: actions/checkout@v6
         with:
@@ -23,13 +30,13 @@ jobs:
           # TODO: Build automatically inside an ArchLinux Chroot
           # Use ssh-agent for private key
       - name: After update, restart gpg-server as it may be old
-        run : gpgconf --kill all
+        run: gpgconf --kill all
       - name: Install dependencies for the pkg
         run: |
           pacman -S --noconfirm java-runtime
       - uses: webfactory/ssh-agent@v0.10.0
         with:
-            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Create a user for makepkg usage
         run: |
           chmod a+rwx ./update.sh
@@ -41,7 +48,8 @@ jobs:
           git config --global user.email "14914796+AkechiShiro@users.noreply.github.com"
           git config --global user.name "Automatic GitHub CI"
       - name: Git clone from AUR
-        run: GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new" git clone ssh://aur@aur.archlinux.org/burpsuite.git
+        run: GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new" git clone
+          ssh://aur@aur.archlinux.org/burpsuite.git
       # INSERT step to setup git config from ENV variable containing secrets????
       # TODO: Find if that's a good solution ^ or to avoid in terms of security
       # Read a lot of documentation and blogs...
@@ -67,7 +75,7 @@ jobs:
           git status
           git checkout master
           git add PKGBUILD .SRCINFO 
-          git diff-index --quiet HEAD || git commit -m "Update to $(sed -Ei '1,\$s|^(pkgver=).*|\1|' PKGBUILD)" 
+          git diff-index --quiet HEAD || git commit -m "Update to $(cat latest_version)" 
           echo "Latest version from upstream seems to be"
           cat latest_version
           cp latest_version ../
@@ -82,14 +90,14 @@ jobs:
           #  run: cat latest_version /__w/aur-burpsuite/latest_version /__w/aur-burpsuite/aur-burpsuite/latest_version
       - uses: EndBug/add-and-commit@v10
         with:
-         add: 'PKGBUILD .SRCINFO latest_version'
-         author_name: "GITHUB CI"
-         author_email: "14914796+AkechiShiro@users.noreply.github.com"
-         commit: --signoff
-         committer_name: "Samy Lahfa"
-         committer_email: "14914796+AkechiShiro@users.noreply.github.com"
-         cwd: '.'
-         default_author: github_actor
-         fetch: false
-         pathspec_error_handling: ignore
-         push: true
+          add: "PKGBUILD .SRCINFO latest_version"
+          author_name: "GITHUB CI"
+          author_email: "14914796+AkechiShiro@users.noreply.github.com"
+          commit: --signoff
+          committer_name: "Samy Lahfa"
+          committer_email: "14914796+AkechiShiro@users.noreply.github.com"
+          cwd: "."
+          default_author: github_actor
+          fetch: false
+          pathspec_error_handling: ignore
+          push: true
